@@ -171,8 +171,3 @@ This is currently a development setup. For production:
 - Set up monitoring and alerting
 - Use a production-grade database
 - Configure backups and disaster recovery
-
-## Support
-
-For issues and feature requests, please [create an issue](https://github.com/yourusername/dg-k8s/issues).
-
