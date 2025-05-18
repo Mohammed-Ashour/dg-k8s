@@ -3,8 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# data directories
+data/
+
 # C extensions
 *.so
+# Dasgter tmp files
+*.tmp*
 
 # Distribution / packaging
 .Python
