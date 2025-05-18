@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster-daemon
+  namespace: dagster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dagster-daemon
+  template:
+    metadata:
+      labels:
+        app: dagster-daemon
+    spec:
+      containers:
+        - name: dagster-daemon
+          image: dg-k8s:latest
+          command: ["dagster-daemon"]
+          args: ["run"]
+          env:
+            - name: DAGSTER_HOME
+              value: /opt/dagster/dagster_home
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: dagster-storage
+              mountPath: /opt/dagster/dagster_home
+      volumes:
+        - name: dagster-storage
+          persistentVolumeClaim:
+            claimName: dagster-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dagster-storage-claim
+  namespace: dagster
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
