@@ -138,6 +138,9 @@ Then visit: http://localhost:3002
 
 ## Next Steps
 
+### Phase 0: Add more flexibility in bbox scalability
+- [ ] Make bbox as a partition  bbox_id_date
+
 ### Phase 1: Infrastructure Enhancement
 - [ ] Migrate to PostgreSQL
 - [ ] Implement Helm charts
