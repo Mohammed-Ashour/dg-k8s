@@ -13,6 +13,7 @@ setup(
         "pandas",
         "shapely",
         "geopandas",
+        "boto3",
     ],
     extras_require={
         "dev": [

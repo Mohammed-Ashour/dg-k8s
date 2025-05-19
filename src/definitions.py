@@ -15,6 +15,7 @@ from src.assets.missed_fields_backfill import missed_fields_processing
 from src.resources.database import sqlite_database
 from src.resources.storage import local_storage
 from src.resources.satellite import satellite_data
+from src.resources.s3 import s3_resource
 
 # Define jobs
 daily_processing_job = define_asset_job(
@@ -51,5 +52,11 @@ defs = Definitions(
         "storage": local_storage.configured({"base_path": "data/output"}),
         "satellite_data": satellite_data.configured({"simulate": True}),
         "io_manager": FilesystemIOManager(base_dir="data/dagster_io"),
+        "s3": s3_resource.configured({
+            "bucket": "test-bucket",
+            "region_name": "us-east-1",
+            "endpoint_url": "http://minio.dagster.svc.cluster.local:9000",
+            "use_ssl": False,
+        }),
     },
 )

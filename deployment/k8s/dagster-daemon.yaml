@@ -16,11 +16,16 @@ spec:
       containers:
         - name: dagster-daemon
           image: dg-k8s:latest
+          imagePullPolicy: IfNotPresent
           command: ["dagster-daemon"]
           args: ["run"]
           env:
             - name: DAGSTER_HOME
               value: /opt/dagster/dagster_home
+            - name: AWS_ACCESS_KEY_ID
+              value: minioadmin
+            - name: AWS_SECRET_ACCESS_KEY
+              value: minioadmin
           resources:
             requests:
               memory: "256Mi"
