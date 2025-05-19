@@ -3,6 +3,7 @@ A simple example of data pipeline built using Dagster on Kubernetes, designed fo
 The project is using simulated data and processes. 
 
 <img src="./design.png">
+<img src="curr_data_flow.png">
 
 ## 💾 Database Structure
 
@@ -140,7 +141,7 @@ Then visit: http://localhost:3002
 
 ### Phase 0: Add more flexibility in bbox scalability
 - [ ] Make bbox as a partition  bbox_id_date
-
+<img src="next_step.png">
 ### Phase 1: Infrastructure Enhancement
 - [ ] Migrate to PostgreSQL
 - [ ] Implement Helm charts
