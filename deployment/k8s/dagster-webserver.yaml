@@ -16,6 +16,7 @@ spec:
       containers:
         - name: dagster-webserver
           image: dg-k8s:latest
+          imagePullPolicy: IfNotPresent
           command: ["dagit"]
           args: ["-h", "0.0.0.0", "-p", "3000"]
           ports:

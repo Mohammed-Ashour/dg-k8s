@@ -16,6 +16,7 @@ spec:
       containers:
         - name: dagster-daemon
           image: dg-k8s:latest
+          imagePullPolicy: IfNotPresent
           command: ["dagster-daemon"]
           args: ["run"]
           env:

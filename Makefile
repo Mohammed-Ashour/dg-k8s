@@ -7,8 +7,8 @@ install-dev:
 	pip install -e ".[dev]"
 
 install:
-	$(MAKE) install-core
-	$(MAKE) install-dev
+	make install-core
+	make install-dev
 	@echo "All dependencies installed successfully."
 
 format:
@@ -23,26 +23,15 @@ up_local:
 
 create_k8s_namespace:
 	kubectl create namespace dagster
-apply_k8s:
-	kubectl apply -f deployment/k8s/deployment.yaml
-	kubectl apply -f deployment/k8s/dagster-daemon.yaml
-	kubectl port-forward service/dg-k8s-service 3002:3000 -n dagster
 
 clean_k8s:
-	# Delete existing deployment and service
-	kubectl delete deployment dg-k8s -n dagster
-	kubectl delete deployment dagster-daemon -n dagster
-	kubectl delete service dg-k8s-service -n dagster
-
-	# Delete any hanging pods
-	kubectl delete pods --all -n dagster
-
-	# Delete the namespace if you want to start fresh
 	kubectl delete namespace dagster --ignore-not-found
 
+
 forward_k8s:
-	kubectl port-forward service/dagster-webserver 3002:3000 -n dagster
 	@echo "Port forwarding to service dg-k8s-service on port 3002"
+	kubectl port-forward service/dagster-webserver 3002:3000 -n dagster
+	
 build_docker:
 	docker build -t dg-k8s:latest .
 	minikube image load dg-k8s:latest
