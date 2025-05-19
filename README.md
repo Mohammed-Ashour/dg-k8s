@@ -160,7 +160,7 @@ Then visit: http://localhost:3002
 - [ ] GitHub Actions pipeline
 
 
-## 📝 License
+## License
 Nothing here is under any license, feel free to use the code in whatever you wanna do, especially if you can make it better
 
 
