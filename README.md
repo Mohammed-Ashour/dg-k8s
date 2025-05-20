@@ -5,7 +5,7 @@ The project is using simulated data and processes.
 <img src="./design.png">
 <img src="curr_data_flow.png">
 
-## 💾 Database Structure
+## Database Structure
 
 The project uses SQLite (development) with the following table structure:
 
@@ -103,6 +103,7 @@ make install
 3. **Build & Deploy**
 ```bash
 make build_docker
+make create_k8s_namespace
 make deploy
 ```
 
@@ -113,12 +114,13 @@ make forward_k8s
 
 Then visit: http://localhost:3002
 
-## 🛠 Development Commands
+## Development Commands
 
 | Command | Description |
 |---------|-------------|
 | `make format` | format and fix your python code using ruff |
 | `make build_docker` | Build and load image to Minikube |
+| `make create_k8s_namespace` | creates the k8s dagster namespace |
 | `make deploy` | Deploy to Kubernetes |
 | `make clean_k8s` | Clean up K8s resources |
 | `make check_pod_status` | View pod status |
@@ -140,7 +142,7 @@ Then visit: http://localhost:3002
 ## Next Steps
 
 ### Phase 0: Add more flexibility in bbox scalability
-- [ ] Make bbox as a partition  bbox_id_date
+- [ ] Make bbox as a partition  bbox_id_date 
 <img src="next_step.png">
 ### Phase 1: Infrastructure Enhancement
 - [ ] Migrate to PostgreSQL
