@@ -42,3 +42,13 @@ def calculate_field_metrics(field_geometry: shapely.geometry.base.BaseGeometry, 
         })
         
     return metrics
+
+def filter_fields_in_bbox(fields, bbox):
+
+    bbox_geom = shape(bbox["geometry"])
+    filtered = []
+    for field in fields:
+        field_geom = shape(field["geometry"])
+        if bbox_geom.intersects(field_geom):
+            filtered.append(field)
+    return filtered

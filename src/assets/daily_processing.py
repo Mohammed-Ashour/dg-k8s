@@ -1,6 +1,6 @@
 from dagster import asset, AssetExecutionContext, DailyPartitionsDefinition, Output, MetadataValue
 import time
-from src.utils.geo import bbox_to_polygon, calculate_field_metrics
+from src.utils.geo import bbox_to_polygon, calculate_field_metrics, filter_fields_in_bbox
 from src.common.processing_type import ProcessingType
 from src.alerting.alert import Alerting
 
@@ -53,8 +53,10 @@ def daily_field_processing(
         
         context.log.info(f"Processing bbox {bbox_id}: {bbox_name} for date {partition_date}")
         
-        # Get all fields that intersect with this bbox
-        fields = db_ops.get_fields()
+        
+        all_fields = db_ops.get_fields()
+        # TODO: use a geospatial db to query fields in bbox
+        fields = filter_fields_in_bbox(all_fields, bbox)
         
         if not fields:
             context.log.info(f"No fields found for bbox {bbox_id} on date {partition_date}")
