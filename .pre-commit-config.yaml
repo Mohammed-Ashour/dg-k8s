@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.9
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        files: deployment/k8s/.*\.ya?ml$
+  - repo: https://github.com/Agilicus/pre-commit-hook-k8svalidate.git
+    rev: v0.0.8
+    hooks:
+      - id: k8svalidate
+        files: deployment/k8s/.*\.ya?ml$ 

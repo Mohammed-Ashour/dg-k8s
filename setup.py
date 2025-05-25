@@ -14,11 +14,5 @@ setup(
         "shapely",
         "geopandas",
     ],
-    extras_require={
-        "dev": [
-            "dagit",
-            "dagster-webserver",
-            "ruff"
-        ]
-    },
+    extras_require={"dev": ["dagit", "dagster-webserver", "ruff"]},
 )
