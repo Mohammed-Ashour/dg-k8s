@@ -1,25 +1,26 @@
 from dagster import (
-    Definitions, 
-    define_asset_job, 
-    ScheduleDefinition,
     AssetSelection,
-    FilesystemIOManager
+    Definitions,
+    FilesystemIOManager,
+    ScheduleDefinition,
+    define_asset_job,
 )
 
-# Import assets
-from src.assets.daily_processing import  daily_field_processing
 from src.assets.bounding_boxes import bounding_boxes
+
+# Import assets
+from src.assets.daily_processing import daily_field_processing
 from src.assets.missed_fields_backfill import missed_fields_processing
 
 # Import resources
 from src.resources.database import sqlite_database
-from src.resources.storage import local_storage
 from src.resources.satellite import satellite_data
+from src.resources.storage import local_storage
 
 # Define jobs
 daily_processing_job = define_asset_job(
     name="daily_processing_job",
-    selection=AssetSelection.assets(bounding_boxes, daily_field_processing)
+    selection=AssetSelection.assets(bounding_boxes, daily_field_processing),
 )
 
 missed_fields_job = define_asset_job(
