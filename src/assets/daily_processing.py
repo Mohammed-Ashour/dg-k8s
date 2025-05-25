@@ -3,6 +3,7 @@ import time
 from src.utils.geo import bbox_to_polygon, calculate_field_metrics
 from src.common.processing_type import ProcessingType
 from src.alerting.alert import Alerting
+from src.assets.bounding_boxes import bbox_date_partitions
 
 
 # Define daily partitions
@@ -12,12 +13,11 @@ daily_partitions = DailyPartitionsDefinition(
 
 
 @asset(
-    partitions_def=daily_partitions,
+    partitions_def=bbox_date_partitions,
     compute_kind="python",
     group_name="processing",
     deps=["bounding_boxes"],
-    required_resource_keys={"database", "storage", "satellite_data"}
-
+    required_resource_keys={"database", "storage", "satellite_data", "s3"}
 )
 def daily_field_processing(
     context: AssetExecutionContext,
@@ -64,7 +64,13 @@ def daily_field_processing(
         
         # Get satellite data for this bbox and date
         try:
-            sat_data = satellite_data.get_data(bbox, partition_date)
+            if satellite_data.simulate:
+                sat_data = satellite_data.get_data(bbox, partition_date)
+            else:
+                s3_client = context.resources.s3
+                s3_bucket = context.resources.s3.meta.config['bucket'] if hasattr(context.resources.s3, 'meta') else context.resources.s3._client_config['bucket']
+                s3_prefix = "satellite-data"
+                sat_data = satellite_data.get_data(bbox, partition_date, s3_client=s3_client, s3_bucket=s3_bucket, s3_prefix=s3_prefix)
             if not sat_data:
                 context.log.error(f"No satellite data available for bbox {bbox_id} on {partition_date}")
                 Alerting.send_alert(level="warning", msg=f"No satellite data available for bbox {bbox_id} on {partition_date}", client_id=context.run.run_id)

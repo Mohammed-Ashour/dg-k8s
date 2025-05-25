@@ -19,3 +19,8 @@ def s3_resource(init_context):
         endpoint_url=init_context.resource_config["endpoint_url"],
         use_ssl=init_context.resource_config["use_ssl"],
     )
+
+def fetch_file_from_s3(s3_client, bucket: str, key: str) -> bytes:
+    """Fetch a file from S3 and return its contents as bytes."""
+    response = s3_client.get_object(Bucket=bucket, Key=key)
+    return response['Body'].read()

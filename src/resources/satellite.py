@@ -1,9 +1,10 @@
 from dagster import resource, InitResourceContext
 import numpy as np
 from datetime import datetime
+import json
 import random
 from typing import Dict, Any, Union, List
-
+from src.resources.s3 import fetch_file_from_s3
 
 class SatelliteDataResource:
     """Resource for retrieving satellite data."""
@@ -12,13 +13,22 @@ class SatelliteDataResource:
         
         self.simulate: bool = simulate
 
-    def get_data(self, bbox: Dict[str, Any], date: Union[str, datetime]) -> Dict[str, Any]:
+    def get_data(self, bbox: Dict[str, Any], date: Union[str, datetime], s3_client=None, s3_bucket=None, s3_prefix=None) -> Dict[str, Any]:
         
         if self.simulate:
             return self._simulate_satellite_data(bbox, date)
         else:
-            # Implement real data source integration here
-            raise NotImplementedError("Real satellite data integration not implemented")
+            if not s3_client or not s3_bucket or not s3_prefix:
+                raise ValueError("S3 client, bucket, and prefix must be provided for real data fetching.")
+            # Compose S3 key based on bbox and date
+            if isinstance(date, str):
+                date_str = date
+            else:
+                date_str = date.strftime('%Y-%m-%d')
+            bbox_id = bbox['bbox_id'] if 'bbox_id' in bbox else bbox.get('id')
+            s3_key = f"{s3_prefix}/bbox_{bbox_id}_{date_str}.json"
+            file_bytes = fetch_file_from_s3(s3_client, s3_bucket, s3_key)
+            return json.loads(file_bytes)
     
     def _simulate_satellite_data(self, bbox: Dict[str, Any], date: Union[str, datetime]) -> Dict[str, Any]:
         
