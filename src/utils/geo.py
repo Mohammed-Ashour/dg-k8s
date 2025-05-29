@@ -1,13 +1,8 @@
 import json
-from typing import Any, Dict, Optional, TypeVar
+from typing import Any, Dict, Optional
 
 import shapely.geometry
 from shapely.geometry import shape
-
-# Define a type for geometry objects
-GeometryType = TypeVar(
-    "GeometryType", shapely.geometry.base.BaseGeometry, Dict[str, Any]
-)
 
 
 def bbox_to_polygon(bbox: Dict[str, Any]) -> shapely.geometry.Polygon:
